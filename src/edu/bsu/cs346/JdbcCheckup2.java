@@ -24,7 +24,7 @@ public static void main (String args [])
 
  Connection conn =
  	      DriverManager.getConnection (url,
- 	           "bjwade", "1521");
+ 	           "bmdavis3", "3441");
 
 
 
