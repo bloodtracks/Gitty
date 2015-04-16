@@ -33,14 +33,22 @@ public static void main (String args [])
  // Create a statement
  Statement stmt = conn.createStatement ();
 
- // Do the SQL
- ResultSet rset = stmt.executeQuery ("select sysdate from dual");
-
- System.out.println("System time is: ");
- while (rset.next ())
-   System.out.println (rset.getString (1));
-
  System.out.println ("Your JDBC installation is correct.");
+ 
+ 
+ 
+ ResultSet rset = stmt.executeQuery("SELECT * from FOOD_ITEM order by Price");
+
+
+ while(rset.next()){
+	 System.out.println (rset.getString(1) + " Price: " + rset.getString(2));
+ }
+
+ 
+	 
+
+ 
+ 
 
  // close the resultSet
  rset.close();
