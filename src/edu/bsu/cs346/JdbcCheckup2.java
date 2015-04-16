@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-class JdbcCheckup2 implements ActionListener {
+class JdbcCheckup2{
 	public static void main(String args[]) throws SQLException, IOException  {
 		//Connects to the database
 		DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
@@ -72,13 +72,7 @@ class JdbcCheckup2 implements ActionListener {
 		// Close the connection
 		conn.close();
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JComboBox cb = (JComboBox)e.getSource();
-        String stringName = (String)cb.getSelectedItem();
-        
-		
-	}
+	
+	
 
 }
