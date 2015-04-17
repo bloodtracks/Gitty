@@ -23,9 +23,9 @@ import javax.swing.JTextArea;
 class JdbcCheckup2{
 	
 	 public static String output = "select * from department";
-	 public static String[][] outputData;
-	 public static  String[] FooldItemsColumnNames = {"Food Name", "Price", "Expiration Date", "Item Number", "Food Type"};
 	
+	 public static  String[] FooldItemsColumnNames = {"Food Name", "Price", "Expiration Date", "Item Number", "Food Type"};
+	 static String[][] dataRows = new String[21][];
 	public static void main(String args[]) throws SQLException, IOException  {
 		//
 		JdbcCheckup2 connectSql = new JdbcCheckup2();
@@ -70,7 +70,7 @@ class JdbcCheckup2{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-			 		JTable table = new JTable(outputData,FooldItemsColumnNames );
+			 		JTable table = new JTable(dataRows,FooldItemsColumnNames );
 			 		gui.add(table);
 			 		gui.pack();
 			 		
@@ -108,9 +108,15 @@ class JdbcCheckup2{
 		Statement stmt = conn.createStatement();
 		ResultSet rset = stmt.executeQuery(output);
 		
+			
+		int i =0;
 		while (rset.next()) {
-			outputData = new String[][]{rset.getString(1)};
+			dataRows[i]=  new String[]{rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4),rset.getString(5)};
+			i++;
 		}
+		
+		
+		
 		
 					// close the resultSet
 					rset.close();
