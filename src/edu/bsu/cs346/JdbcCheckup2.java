@@ -42,8 +42,6 @@ class JdbcCheckup2{
 		selectButton.setLayout(new FlowLayout());
 		gui.add(selectButton);
 		
-	
-		
 		//Drop Down Menu
 		JComboBox<String> dropDown = new JComboBox<String>();
 		dropDown.addItem("Food Items");
@@ -53,8 +51,8 @@ class JdbcCheckup2{
 		gui.add(dropDown);
 		gui.pack();
 		
-
-		
+		JTextArea dataArea = new JTextArea();
+		gui.add(dataArea);
 		ActionListener clicked = new ActionListener(){
 
 			@Override
@@ -71,10 +69,11 @@ class JdbcCheckup2{
 					}
 			 		
 			 		for(int i= 0; i< outputData.size(); i++){
-			 			JLabel data = new JLabel();
-			 			data.setText(outputData.get(i));
-			 			gui.add(data);
+			 			dataArea.append(outputData.get(i) + "\n");
+			 			
+			 			
 			 		}
+			 		gui.pack();
 			 		
 			 	}
 			 	
@@ -102,7 +101,8 @@ class JdbcCheckup2{
 		selectButton.addActionListener(clicked);
 		
 	}
-
+	//bmdavis3
+	//3441
 	public void getSqlOutput(String output) throws SQLException{
 		
 		DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
