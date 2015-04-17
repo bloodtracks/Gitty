@@ -17,12 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 class JdbcCheckup2{
 	
 	 public static String output = "select * from department";
-	 public static ArrayList<String> outputData;
+	 public static String[][] outputData;
+	 public static  String[] FooldItemsColumnNames = {"Food Name", "Price", "Expiration Date", "Item Number", "Food Type"};
 	
 	public static void main(String args[]) throws SQLException, IOException  {
 		//
@@ -51,14 +53,15 @@ class JdbcCheckup2{
 		gui.add(dropDown);
 		gui.pack();
 		
-		JTextArea dataArea = new JTextArea();
-		gui.add(dataArea);
+		
 		ActionListener clicked = new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			 String menuSelected =	 dropDown.getSelectedItem().toString();
 			 	if(menuSelected == "Food Items"){
+			 		
+			 		
 			 		
 			 		output = "select * from food_item";
 			 		try {
@@ -67,12 +70,8 @@ class JdbcCheckup2{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-			 		
-			 		for(int i= 0; i< outputData.size(); i++){
-			 			dataArea.append(outputData.get(i) + "\n");
-			 			
-			 			
-			 		}
+			 		JTable table = new JTable(outputData,FooldItemsColumnNames );
+			 		gui.add(table);
 			 		gui.pack();
 			 		
 			 	}
@@ -87,11 +86,7 @@ class JdbcCheckup2{
 						e1.printStackTrace();
 					}
 			 		
-			 		for(int i= 0; i< outputData.size(); i++){
-			 			JLabel data = new JLabel();
-			 			data.setText(outputData.get(i));
-			 			gui.add(data);
-			 		}
+			 		
 			 	}
 			 	
 			}
@@ -112,16 +107,11 @@ class JdbcCheckup2{
 		
 		Statement stmt = conn.createStatement();
 		ResultSet rset = stmt.executeQuery(output);
-		outputData = new ArrayList<String>();
+		
 		while (rset.next()) {
-			outputData.add(rset.getString(1));
-			System.out.println(rset.getString(1) + " Price: "
-					+ rset.getString(2));
+			outputData = new String[][]{rset.getString(1)};
 		}
 		
-		
-		
-	
 					// close the resultSet
 					rset.close();
 
@@ -130,11 +120,6 @@ class JdbcCheckup2{
 
 					// Close the connection
 					conn.close();
-		
-		
-			
-			
-
 		
 	}
 	
