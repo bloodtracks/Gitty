@@ -60,6 +60,8 @@ class JdbcCheckup2 {
 		dropDown.addItem("Store Information");
 		gui.add(dropDown);
 		gui.pack();
+		
+		
 
 		// Select Button
 		JButton selectButton = new JButton();
@@ -68,6 +70,12 @@ class JdbcCheckup2 {
 		gui.add(selectButton);
 		gui.pack();
 
+		JComboBox<String> querydropDown = new JComboBox<String>();
+		dropDown.addItem("Items Between $.90 and $2.00");
+		gui.add(querydropDown);
+		gui.pack();
+		
+		
 		ActionListener clicked = new ActionListener() {
 
 			@Override
