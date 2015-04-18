@@ -29,11 +29,16 @@ class JdbcCheckup2 {
 
 	public static String[] foodItemsColumnNames = { "Food Name", "Price",
 			"Expiration Date", "Item Number", "Food Type" };
+
+	public static String[] departmentColumnNames = { "Phone Number",
+			"Department Name", "Store Name" };
+
+	public static String[] catagoriesColumnNames = { "Name", "Type",
+			"Department Name" };
 	
-	public static String[] departmentColumnNames = { "Phone Number",  "Department Name", "Store Name" };
+	public static String[] storesColumnNames = { "Name", "Address"};
+
 	static String[][] dataRows;
-	
-	
 
 	public static void main(String args[]) throws SQLException, IOException {
 		//
@@ -50,7 +55,7 @@ class JdbcCheckup2 {
 		// Drop Down Menu
 		JComboBox<String> dropDown = new JComboBox<String>();
 		dropDown.addItem("Food Items");
-		dropDown.addItem("Food Catagories");
+		dropDown.addItem("Food Categories");
 		dropDown.addItem("Departments");
 		dropDown.addItem("Store Information");
 		gui.add(dropDown);
@@ -62,9 +67,7 @@ class JdbcCheckup2 {
 		selectButton.setLayout(new FlowLayout());
 		gui.add(selectButton);
 		gui.pack();
-		
 
-		
 		ActionListener clicked = new ActionListener() {
 
 			@Override
@@ -82,8 +85,8 @@ class JdbcCheckup2 {
 						e1.printStackTrace();
 					}
 					JTable table = new JTable(dataRows, foodItemsColumnNames);
-					 gui.add(new JScrollPane(table));
-					 gui.pack();
+					gui.add(new JScrollPane(table));
+					gui.pack();
 				}
 
 				if (menuSelected == "Departments") {
@@ -97,14 +100,49 @@ class JdbcCheckup2 {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
-					JTable table = new JTable(dataRows, departmentColumnNames);
-					 gui.add(new JScrollPane(table));
-					 gui.pack();
-				}
-				 
-			}
 
+					JTable table = new JTable(dataRows, departmentColumnNames);
+					gui.add(new JScrollPane(table));
+					gui.pack();
+				}
+
+				if (menuSelected == "Food Categories") {
+
+					output = "select * from categories";
+					dataRows = new String[15][];
+					try {
+
+						connectSql.getSqlOutput(output);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					JTable table = new JTable(dataRows, catagoriesColumnNames);
+					table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					gui.add(new JScrollPane(table));
+					gui.pack();
+				}
+				
+				if (menuSelected == "Store Information") {
+
+					output = "select * from stores";
+					dataRows = new String[1][];
+					try {
+
+						connectSql.getSqlOutput(output);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					JTable table = new JTable(dataRows, storesColumnNames);
+					table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+					gui.add(new JScrollPane(table));
+					gui.pack();
+				}
+
+			}
 		};
 
 		selectButton.addActionListener(clicked);
@@ -133,13 +171,17 @@ class JdbcCheckup2 {
 				dataRows[i] = new String[] { rset.getString(1),
 						rset.getString(2), rset.getString(3),
 						rset.getString(4), rset.getString(5) };
-				
-			}
 
+			}
 
 			if (rsmd.getColumnCount() == 3) {
 				dataRows[i] = new String[] { rset.getString(1),
-						rset.getString(2), rset.getString(3)};
+						rset.getString(2), rset.getString(3) };
+			}
+			
+			if (rsmd.getColumnCount() == 2) {
+				dataRows[i] = new String[] { rset.getString(1),
+						rset.getString(2)};
 			}
 			i++;
 		}
