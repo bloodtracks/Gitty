@@ -18,8 +18,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 
 class JdbcCheckup2 {
 
@@ -79,6 +81,9 @@ class JdbcCheckup2 {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					JTable table = new JTable(dataRows, foodItemsColumnNames);
+					 gui.add(new JScrollPane(table));
+					 gui.pack();
 				}
 
 				if (menuSelected == "Departments") {
@@ -93,11 +98,11 @@ class JdbcCheckup2 {
 						e1.printStackTrace();
 					}
 					
-
+					JTable table = new JTable(dataRows, departmentColumnNames);
+					 gui.add(new JScrollPane(table));
+					 gui.pack();
 				}
-				 JTable table = new JTable(dataRows, departmentColumnNames);
-				 gui.add(table);
-				 gui.pack();
+				 
 			}
 
 		};
@@ -133,11 +138,8 @@ class JdbcCheckup2 {
 
 
 			if (rsmd.getColumnCount() == 3) {
-				System.out.println(rset.getString(1));
-				
 				dataRows[i] = new String[] { rset.getString(1),
 						rset.getString(2), rset.getString(3)};
-				
 			}
 			i++;
 		}
