@@ -91,6 +91,12 @@ class JdbcCheckup2 {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		panel.add(new JScrollPane(table));
 		gui.pack();
+		
+		
+		JButton refreshButton = new JButton();
+		refreshButton.setText("Refesh!");
+		refreshButton.setLayout(new FlowLayout());
+		gui.add(refreshButton);
 
 		ActionListener queryClicked = new ActionListener() {
 
@@ -392,6 +398,21 @@ class JdbcCheckup2 {
 		};
 
 		selectButton.addActionListener(clicked);
+		
+		ActionListener refreshClicked = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panel.remove(table);
+				JTable table = new JTable(dataRows, dataColumns);
+				table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+				panel.add(new JScrollPane(table));
+				gui.pack();
+			}
+			
+		};
+		
+		refreshButton.addActionListener(refreshClicked);
 
 	}
 
