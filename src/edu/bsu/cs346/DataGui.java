@@ -2,6 +2,8 @@ package edu.bsu.cs346;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -16,10 +18,14 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.Popup;
 
 class DataGui {
 
@@ -27,7 +33,7 @@ class DataGui {
 
 	public static String[] dataColumns = { "Nothing yet" };
 
-	static String[][] dataRows = { { "Empty" }};
+	static String[][] dataRows = { { "Empty" } };
 
 	static int rowCount = 0;
 
@@ -58,19 +64,18 @@ class DataGui {
 		gui.add(selectButton);
 
 		JComboBox<String> querydropDown = new JComboBox<String>();
-		querydropDown.addItem("Items Between $.90 and $1.90");
-		querydropDown.addItem("Find Pork Bacon");
-		querydropDown.addItem("Find all Bacon");
-		querydropDown.addItem("Find all Items Under a Dollar");
-		querydropDown.addItem("Items That Expire after June 30");
+		querydropDown.addItem("Items Between a Certain Price");
+		querydropDown.addItem("Find an Item By Name and Type");
+		querydropDown.addItem("Find Items all With a Given Name");
+		querydropDown.addItem("Find all Items Under a Certain Price");
+		querydropDown.addItem("Items That Expire after a Certain Date");
 		querydropDown.addItem("Find Which Department occupies which Aisle");
-		querydropDown.addItem("Every Item that has its Category Name in its Name");
+		querydropDown
+				.addItem("Every Item that has its Category Name in its Name");
 		querydropDown.addItem("Items that will expire within a week");
 		querydropDown.addItem("Average Price of Items in Each Category");
 		querydropDown.addItem("Net Worth of Current Invetory");
 		gui.add(querydropDown);
-		
-		
 
 		// Query Drop Down
 		JButton queryButton = new JButton();
@@ -84,11 +89,13 @@ class DataGui {
 		panel.setVisible(true);
 		gui.add(panel);
 		gui.pack();
-		
-		
-		
-		
-		
+
+		JFrame popUp = new JFrame();
+		popUp.setSize(200, 200);
+
+		JPanel popPanel = new JPanel();
+		popUp.add(popPanel);
+
 		ActionListener queryClicked = new ActionListener() {
 
 			@Override
@@ -97,8 +104,25 @@ class DataGui {
 				String menuSelected = querydropDown.getSelectedItem()
 						.toString();
 
-				if (menuSelected == "Items Between $.90 and $1.90") {
-					output = "select price, f_name, item_number from food_item where price between .9 and 1.9";
+				if (menuSelected == "Items Between a Certain Price") {
+
+					JFrame popUp = new JFrame("Price Range");
+
+					String lowBound = JOptionPane.showInputDialog(popUp,
+							"Please Enter the Lowest Price",
+							"Secret code needed (title)",
+							JOptionPane.OK_CANCEL_OPTION
+
+					);
+
+					String highBound = JOptionPane.showInputDialog(popUp,
+							"Please Enter the Highest Price",
+							"Secret code needed (title)",
+							JOptionPane.OK_CANCEL_OPTION
+
+					);
+					output = "select price, f_name, item_number from food_item where price between "
+							+ lowBound + " and " + highBound;
 					try {
 						connectSql.getSqlRowCount(output);
 					} catch (SQLException e2) {
@@ -115,8 +139,26 @@ class DataGui {
 					}
 				}
 
-				if (menuSelected == "Find Pork Bacon") {
-					output = "select food_item.* from food_item where f_name = 'Bacon' and f_type ='Pork'";
+				if (menuSelected == "Find an Item By Name and Type") {
+					
+					JFrame popUp = new JFrame("Find an Item By Name and Type");
+
+					String name = JOptionPane.showInputDialog(popUp,
+							"Please Enter the Name of the Item",
+							"Find an Item By Name and Type",
+							JOptionPane.OK_CANCEL_OPTION
+
+					);
+
+					String type = JOptionPane.showInputDialog(popUp,
+							"Please Enter the Type of the Item",
+							"Find an Item By Name and Type",
+							JOptionPane.OK_CANCEL_OPTION
+
+					);
+					
+					
+					output = "select food_item.* from food_item where f_name = '"+name+"' and f_type ='"+type+"'";
 					try {
 						connectSql.getSqlRowCount(output);
 					} catch (SQLException e2) {
@@ -134,8 +176,18 @@ class DataGui {
 
 				}
 
-				if (menuSelected == "Find all Bacon") {
-					output = "select food_item.* from food_item where f_name = 'Bacon'";
+				if (menuSelected == "Find Items all With a Given Name") {
+					
+					JFrame popUp = new JFrame("Price Range");
+					
+					String name = JOptionPane.showInputDialog(popUp,
+							"Please Enter the Name of the Item",
+							"Find an Item By Name and Type",
+							JOptionPane.OK_CANCEL_OPTION
+
+					);
+					
+					output = "select food_item.* from food_item where f_name = '"+name+"'";
 					try {
 						connectSql.getSqlRowCount(output);
 					} catch (SQLException e2) {
@@ -153,8 +205,18 @@ class DataGui {
 
 				}
 
-				if (menuSelected == "Find all Items Under a Dollar") {
-					output = "select food_item.f_name as f_name1, food_item.price from food_item where food_item.price < 1.00";
+				if (menuSelected == "Find all Items Under a Certain Price") {
+					
+					JFrame popUp = new JFrame("Price Range");
+					
+					String price = JOptionPane.showInputDialog(popUp,
+							"Please Enter the Lowest Price",
+							"Under A Certain Price",
+							JOptionPane.OK_CANCEL_OPTION
+
+					);
+					
+					output = "select food_item.f_name as f_name1, food_item.price from food_item where food_item.price < " + price;
 					try {
 						connectSql.getSqlRowCount(output);
 					} catch (SQLException e2) {
@@ -171,130 +233,132 @@ class DataGui {
 					}
 				}
 
-					if (menuSelected == "Items That Expire after June 30") {
-						output = "select food_item.* from food_item where food_item.expiration_date > '30-JUN-15'";
-						try {
-							connectSql.getSqlRowCount(output);
-						} catch (SQLException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
-						dataRows = new String[rowCount][];
-						try {
-							connectSql.getSqlOutput(output);
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
+				if (menuSelected == "Items That Expire after a Certain Date") {
 					
-					if (menuSelected == "Find Which Department occupies which Aisle") {
-						output = "select aisle.aisle_number, department.D_name from aisle join Department on aisle.d_location = department.d_name";
-						try {
-							connectSql.getSqlRowCount(output);
-						} catch (SQLException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
-						dataRows = new String[rowCount][];
-						try {
-							connectSql.getSqlOutput(output);
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
+					JFrame popUp = new JFrame("Price Range");
 					
-					if (menuSelected == "Every Item that has its Category Name in its Name") {
-						output = "select f.f_name, f.f_type from food_item f where f.f_type in (select c_name from categories c where c.c_name = f.f_type)";
-						try {
-							connectSql.getSqlRowCount(output);
-						} catch (SQLException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
-						dataRows = new String[rowCount][];
-						try {
-							connectSql.getSqlOutput(output);
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
+					String date = JOptionPane.showInputDialog(popUp,
+							"Please Enter a Date (Example: 30-JUN-15)",
+							"What Expires When",
+							JOptionPane.OK_CANCEL_OPTION);
 					
-					if (menuSelected == "Items that will expire within a week") {
-						output = "(select f_name from food_item) minus (select f_name from food_item where expiration_date > '26-APR-15')";
-						try {
-							connectSql.getSqlRowCount(output);
-						} catch (SQLException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
-						dataRows = new String[rowCount][];
-						try {
-							connectSql.getSqlOutput(output);
-
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+					output = "select food_item.* from food_item where food_item.expiration_date > '"+date+"'";
+					try {
+						connectSql.getSqlRowCount(output);
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
 					}
-					
-					if (menuSelected == "Average Price of Items in Each Category") {
-						output = "select f_type, count(*), avg(price) from food_item group by f_type";
-						try {
-							connectSql.getSqlRowCount(output);
-						} catch (SQLException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
-						dataRows = new String[rowCount][];
-						try {
-							connectSql.getSqlOutput(output);
+					dataRows = new String[rowCount][];
+					try {
+						connectSql.getSqlOutput(output);
 
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-					
-					if (menuSelected == "Net Worth of Current Invetory") {
-						output = "select SUM(price) from food_item";
-						try {
-							connectSql.getSqlRowCount(output);
-						} catch (SQLException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
-						dataRows = new String[rowCount][];
-						try {
-							connectSql.getSqlOutput(output);
+				}
 
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+				if (menuSelected == "Find Which Department occupies which Aisle") {
+					output = "select aisle.aisle_number, department.D_name from aisle join Department on aisle.d_location = department.d_name";
+					try {
+						connectSql.getSqlRowCount(output);
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
 					}
-				
+					dataRows = new String[rowCount][];
+					try {
+						connectSql.getSqlOutput(output);
 
-					panel.removeAll();
-					JTable table = new JTable(dataRows, dataColumns);
-					table = new JTable(dataRows, dataColumns);
-					table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-					panel.add(new JScrollPane(table));
-					gui.pack();
-				
-				
-				
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+				if (menuSelected == "Every Item that has its Category Name in its Name") {
+					output = "select f.f_name, f.f_type from food_item f where f.f_type in (select c_name from categories c where c.c_name = f.f_type)";
+					try {
+						connectSql.getSqlRowCount(output);
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					dataRows = new String[rowCount][];
+					try {
+						connectSql.getSqlOutput(output);
+
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+				if (menuSelected == "Items that will expire within a week") {
+					output = "(select f_name from food_item) minus (select f_name from food_item where expiration_date > '26-APR-15')";
+					try {
+						connectSql.getSqlRowCount(output);
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					dataRows = new String[rowCount][];
+					try {
+						connectSql.getSqlOutput(output);
+
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+				if (menuSelected == "Average Price of Items in Each Category") {
+					output = "select f_type, count(*), avg(price) from food_item group by f_type";
+					try {
+						connectSql.getSqlRowCount(output);
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					dataRows = new String[rowCount][];
+					try {
+						connectSql.getSqlOutput(output);
+
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+				if (menuSelected == "Net Worth of Current Invetory") {
+					output = "select SUM(price) from food_item";
+					try {
+						connectSql.getSqlRowCount(output);
+					} catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					dataRows = new String[rowCount][];
+					try {
+						connectSql.getSqlOutput(output);
+
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+				panel.removeAll();
+				JTable table = new JTable(dataRows, dataColumns);
+				table = new JTable(dataRows, dataColumns);
+				table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+				panel.add(new JScrollPane(table));
+				gui.pack();
 
 			}
 
 		};
-
-		
 
 		ActionListener clicked = new ActionListener() {
 
@@ -394,14 +458,8 @@ class DataGui {
 		};
 		queryButton.addActionListener(queryClicked);
 		selectButton.addActionListener(clicked);
-		
-		
-		
-		
-		
-		
+
 	}
-	
 
 	// bmdavis3
 	// 3441
@@ -461,9 +519,9 @@ class DataGui {
 				dataRows[i] = new String[] { rset.getString(1),
 						rset.getString(2) };
 			}
-			
+
 			if (rsmd.getColumnCount() == 1) {
-				dataRows[i] = new String[] { rset.getString(1)};
+				dataRows[i] = new String[] { rset.getString(1) };
 			}
 			i++;
 		}
