@@ -12,16 +12,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.table.DefaultTableModel;
 
 class JdbcCheckup2 {
 
@@ -71,10 +67,44 @@ class JdbcCheckup2 {
 		gui.pack();
 
 		JComboBox<String> querydropDown = new JComboBox<String>();
-		dropDown.addItem("Items Between $.90 and $2.00");
+		querydropDown.addItem("Items Between $.90 and $2.00");
 		gui.add(querydropDown);
 		gui.pack();
 		
+		JButton queryButton = new JButton();
+		queryButton.setText("Select a Query!");
+		queryButton.setLayout(new FlowLayout());
+		gui.add(queryButton);
+		gui.pack();
+		
+		
+		ActionListener queryClicked = new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String menuSelected = dropDown.getSelectedItem().toString();
+
+				if (menuSelected == "Food Items") {
+
+					output = "select price, f_name, item_number from food_item where price between .9 and 1.9";
+					dataRows = new String[11][];
+					try {
+
+						connectSql.getSqlOutput(output);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					JTable table = new JTable(dataRows, foodItemsColumnNames);
+					gui.add(new JScrollPane(table));
+					gui.pack();
+				}
+				
+			}
+			
+		};
+		
+		queryButton.addActionListener(queryClicked);
 		
 		ActionListener clicked = new ActionListener() {
 
