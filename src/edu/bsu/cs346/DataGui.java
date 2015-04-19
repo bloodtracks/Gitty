@@ -21,7 +21,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-class JdbcCheckup2 {
+class DataGui {
 
 	public static String output;
 
@@ -33,7 +33,7 @@ class JdbcCheckup2 {
 
 	public static void main(String args[]) throws SQLException, IOException {
 		//
-		JdbcCheckup2 connectSql = new JdbcCheckup2();
+		DataGui connectSql = new DataGui();
 
 		// Whole Frame
 		JFrame gui = new JFrame();
@@ -58,7 +58,7 @@ class JdbcCheckup2 {
 		gui.add(selectButton);
 
 		JComboBox<String> querydropDown = new JComboBox<String>();
-		querydropDown.addItem("Items Between $.90 and $2.00");
+		querydropDown.addItem("Items Between $.90 and $1.90");
 		querydropDown.addItem("Find Pork Bacon");
 		querydropDown.addItem("Find all Bacon");
 		querydropDown.addItem("Find all Items Under a Dollar");
@@ -97,7 +97,7 @@ class JdbcCheckup2 {
 				String menuSelected = querydropDown.getSelectedItem()
 						.toString();
 
-				if (menuSelected == "Items Between $.90 and $2.00") {
+				if (menuSelected == "Items Between $.90 and $1.90") {
 					output = "select price, f_name, item_number from food_item where price between .9 and 1.9";
 					try {
 						connectSql.getSqlRowCount(output);
