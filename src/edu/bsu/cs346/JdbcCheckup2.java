@@ -27,11 +27,9 @@ class JdbcCheckup2 {
 
 	public static String[] dataColumns = { "Nothing yet" };
 
-	static String[][] dataRows = { { "Empty" }, { "Empty" } };
+	static String[][] dataRows = { { "Empty" }};
 
 	static int rowCount = 0;
-
-	JTable table = new JTable(dataRows, dataColumns);
 
 	public static void main(String args[]) throws SQLException, IOException {
 		//
@@ -86,11 +84,8 @@ class JdbcCheckup2 {
 		panel.setVisible(true);
 		gui.add(panel);
 		gui.pack();
-
-		JTable table = new JTable(dataRows, dataColumns);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		panel.add(new JScrollPane(table));
-		gui.pack();
+		
+		
 		
 		
 		
@@ -285,17 +280,21 @@ class JdbcCheckup2 {
 					}
 				
 
-				panel.remove(table);
-				JTable table2 = new JTable(dataRows, dataColumns);
-				table2.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-				panel.add(new JScrollPane(table2));
-				gui.pack();
+					panel.removeAll();
+					JTable table = new JTable(dataRows, dataColumns);
+					table = new JTable(dataRows, dataColumns);
+					table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					panel.add(new JScrollPane(table));
+					gui.pack();
+				
+				
+				
 
 			}
 
 		};
 
-		queryButton.addActionListener(queryClicked);
+		
 
 		ActionListener clicked = new ActionListener() {
 
@@ -385,18 +384,24 @@ class JdbcCheckup2 {
 						e1.printStackTrace();
 					}
 				}
-				panel.remove(table);
+				panel.removeAll();
 				JTable table = new JTable(dataRows, dataColumns);
+				table = new JTable(dataRows, dataColumns);
 				table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 				panel.add(new JScrollPane(table));
 				gui.pack();
 			}
 		};
-
+		queryButton.addActionListener(queryClicked);
 		selectButton.addActionListener(clicked);
-				
+		
+		
+		
+		
+		
 		
 	}
+	
 
 	// bmdavis3
 	// 3441
