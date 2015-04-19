@@ -286,9 +286,9 @@ class JdbcCheckup2 {
 				
 
 				panel.remove(table);
-				JTable table = new JTable(dataRows, dataColumns);
-				table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-				panel.add(new JScrollPane(table));
+				JTable table2 = new JTable(dataRows, dataColumns);
+				table2.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+				panel.add(new JScrollPane(table2));
 				gui.pack();
 
 			}
